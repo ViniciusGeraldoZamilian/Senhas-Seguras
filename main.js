@@ -24,9 +24,10 @@ function aumentaTamanho(){
     geraSenha();
 }
 
-// Declaração dos elementos do HTML e elementos de texto (Organizado no topo)
+// Declaração dos elementos do HTML e elementos de texto
 const campoSenha = document.querySelector('#campo-senha');
 const checkbox = document.querySelectorAll('.checkbox');
+const forcaSenha = document.querySelector('.forca'); // Elemento da força da senha bem posicionado
 
 const letrasMaiusculas = 'ABCDEFGHIJKLMNOPQRSTUVXYWZ';
 const letrasMinusculas = 'abcdefghijklmnopqrstuvxywz';
@@ -56,9 +57,10 @@ function geraSenha(){
     
     console.log(alfabeto);
     
-    // Proteção: Se nenhum checkbox estiver marcado, evita que o loop quebre
+    // Proteção: Se nenhum checkbox estiver marcado, para a execução
     if (alfabeto.length === 0) {
         campoSenha.value = "Selecione uma opção";
+        forcaSenha.classList.remove('fraca','media','forte'); // Limpa a barra se não houver caracteres
         return;
     }
 
@@ -72,9 +74,6 @@ function geraSenha(){
     classificaSenha();
 }
 
-// Executa a função para gerar a senha inicial depois que tudo foi configurado
-geraSenha();
-const forcaSenha = document.querySelector('.forca');
 function classificaSenha(){
     forcaSenha.classList.remove('fraca','media','forte');
     if (tamanhoSenha > 11){
@@ -85,3 +84,6 @@ function classificaSenha(){
         forcaSenha.classList.add('fraca');
     }
 }
+
+// Executa a função para gerar a senha inicial depois que tudo foi configurado
+geraSenha();
