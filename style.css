@@ -125,17 +125,28 @@ label {
     cursor: pointer;
 }
 
+/* Container para agrupar o fundo da barra e a cor indicadora */
+.barra-recipiente {
+    position: relative;
+    height: 30px;
+    margin-bottom: 10px;
+}
+
 .barra {
     background-color: var(--fundo-senha);
     height: 30px;
     width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 .forca {
     height: 30px;
-    position: relative;
-    bottom: 30px;
-    transition: width 0.3s ease; /* Transição suave para a barra mudar de tamanho */
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: width 0.3s ease;
 }
 
 .fraca {
@@ -153,12 +164,12 @@ label {
     width: 100%;
 }
 
-/* Modificações para alinhar a entropia abaixo das forças */
+/* Modificação: Alinha tudo em coluna para empilhar verticalmente */
 .parametro-senha-textos {
     display: flex;
-    justify-content: space-between;
-    }
-    
+    flex-direction: column; 
+    gap: 12px;
+}
 
 .forca-niveis {
     display: flex;
@@ -166,9 +177,12 @@ label {
     width: 100%;
 }
 
+.forca-niveis p {
+    margin: 0;
+}
+
 .entropia {
-    font-size: 16px;
-    color: #a0a0a0;
-    text-align: left;
-    margin: 4px 0 0 0;
+    font-size: 14px;
+    color: #a0aec0; /* Tom cinza claro para melhor leitura secundária */
+    margin: 0;
 }
