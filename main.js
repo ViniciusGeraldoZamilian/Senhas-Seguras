@@ -4,7 +4,6 @@ numeroSenha.textContent = tamanhoSenha;
 
 const botoes = document.querySelectorAll('.parametro-senha__botao');
 
-console.log(botoes);
 botoes[0].onclick = diminuiTamanho;
 botoes[1].onclick = aumentaTamanho;
 
@@ -27,7 +26,8 @@ function aumentaTamanho(){
 // Declaração dos elementos do HTML e elementos de texto
 const campoSenha = document.querySelector('#campo-senha');
 const checkbox = document.querySelectorAll('.checkbox');
-const forcaSenha = document.querySelector('.forca'); // Elemento da força da senha bem posicionado
+const forcaSenha = document.querySelector('.forca'); 
+const valorEntropia = document.querySelector('.entropia'); // Movido para fora para performance
 
 const letrasMaiusculas = 'ABCDEFGHIJKLMNOPQRSTUVXYWZ';
 const letrasMinusculas = 'abcdefghijklmnopqrstuvxywz';
@@ -42,53 +42,48 @@ for (let i = 0; i < checkbox.length; i++){
 function geraSenha(){
     let alfabeto = '';
     
-    if (checkbox[0].checked){
-        alfabeto = alfabeto + letrasMaiusculas;
-    }
-    if (checkbox[1].checked){
-        alfabeto = alfabeto + letrasMinusculas;
-    }
-    if (checkbox[2].checked){
-        alfabeto = alfabeto + numeros;
-    }
-    if (checkbox[3].checked){
-        alfabeto = alfabeto + simbolos;
-    }
+    if (checkbox[0].checked) alfabeto += letrasMaiusculas;
+    if (checkbox[1].checked) alfabeto += letrasMinusculas;
+    if (checkbox[2].checked) alfabeto += numeros;
+    if (checkbox[3].checked) alfabeto += simbolos;
     
-    console.log(alfabeto);
-    
-    // Proteção: Se nenhum checkbox estiver marcado, para a execução
+    // Proteção: Se nenhum checkbox estiver marcado
     if (alfabeto.length === 0) {
         campoSenha.value = "Selecione uma opção";
-        forcaSenha.classList.remove('fraca','media','forte'); // Limpa a barra se não houver caracteres
+        forcaSenha.classList.remove('fraca','media','forte');
+        if (valorEntropia) valorEntropia.textContent = "Um computador levaria 0 dias.";
         return;
     }
 
     let senha = '';
     for (let i = 0; i < tamanhoSenha; i++){
-        let numeroAleatorio = Math.random() * alfabeto.length;
-        numeroAleatorio = Math.floor(numeroAleatorio);
-        senha = senha + alfabeto[numeroAleatorio];
+        let numeroAleatorio = Math.floor(Math.random() * alfabeto.length);
+        senha += alfabeto[numeroAleatorio];
     }
+    
     campoSenha.value = senha;
-    classificaSenha();
-    classificaSenha(alfabeto.length);
+    classificaSenha(alfabeto.length); // Chamada única e correta
 }
 
 function classificaSenha(tamanhoAlfabeto){
-    let entropia = tamanhoSenha * Math.log2(tamanhoSenha);
-    console.log(entropia);
+    // Fórmula correta da entropia: tamanho da senha * log2(tamanho do alfabeto)
+    let entropia = tamanhoSenha * Math.log2(tamanhoAlfabeto);
+    
     forcaSenha.classList.remove('fraca','media','forte');
+    
     if (entropia > 57){
         forcaSenha.classList.add('forte');
-    } else if (entropia > 35 && entropia < 57) {
+    } else if (entropia >= 36) {
         forcaSenha.classList.add('media');
-    } else if (entropia <= 35){
+    } else {
         forcaSenha.classList.add('fraca');
     }
-   const valorEntropia = document.querySelector('.entropia');
-valorEntropia.textContent = "Um computador pode levar até " + Math.floor(2**entropia/(100e6*60*60*24)) + " dias para descobrir essa senha.";
+    
+    if (valorEntropia) {
+        let dias = Math.floor(2**entropia / (100e6 * 60 * 60 * 24));
+        valorEntropia.textContent = "Um computador pode levar até " + dias + " dias para descobrir essa senha.";
+    }
 }
 
-// Executa a função para gerar a senha inicial depois que tudo foi configurado
+// Executa a função para gerar a senha inicial
 geraSenha();
