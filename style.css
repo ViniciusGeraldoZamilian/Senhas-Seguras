@@ -156,10 +156,9 @@ label {
 /* Modificações para alinhar a entropia abaixo das forças */
 .parametro-senha-textos {
     display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-top: 8px;
-}
+    justify-content: space-between;
+    }
+    
 
 .forca-niveis {
     display: flex;
